@@ -43,7 +43,7 @@ esac
 # uncomment for a colored prompt, if the terminal has the capability; turned
 # off by default to not distract the user: the focus in a terminal window
 # should be on the output of commands, not on the prompt
-force_color_prompt=no
+#force_color_prompt=yes
 
 if [ -n "$force_color_prompt" ]; then
     if [ -x /usr/bin/tput ] && tput setaf 1 >&/dev/null; then
@@ -71,6 +71,13 @@ xterm*|rxvt*)
 *)
     ;;
 esac
+
+#ADDS_GET_BRANCHES_TO_TERMINAL_OUTPUT                                           
+parse_git_branch() {
+    git branch 2> /dev/null | sed -e '/^[^*]/d' -e 's/* \(.*\)/ (\1)/'
+}
+
+export PS1="\[\033[01;35m\]\u\[\033[01;00m\]@\[\033[01;032m\]\h\[\033[01;31m\](\!) \[\033[01;34m\]\w\[\033[01;33m\]\$(parse_git_branch)\[\033[01;35m\] $ \[\033[01;37m\]"
 
 # enable color support of ls and also add handy aliases
 if [ -x /usr/bin/dircolors ]; then
@@ -117,14 +124,5 @@ if ! shopt -oq posix; then
   fi
 fi
 
-#ADDS_GET_BRANCHES_TO_TERMINAL_OUTPUT
-parse_git_branch() {
-    git branch 2> /dev/null | sed -e '/^[^*]/d' -e 's/* \(.*\)/ (\1)/'
-}
+export LFS=/home/mseagle/lfs
 
-export PS1="\[\033[35m\]\u\[\033[00m\]@\[\033[32m\](\!) \[\033[34m\]\w\[\033[33m\]\$(parse_git_branch)\[\033[35m\] $ \[\033[37m\]"
-
-#JAVA
-PATH=$PATH:/home/mseagle/Java/java/bin
-#JAVA_HOME
-JAVA_HOME="/home/mseagle/Java/java"
